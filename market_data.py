@@ -12,6 +12,7 @@ interval_map = {
     '4hr' : Client.KLINE_INTERVAL_4HOUR,
     '8hr' : Client.KLINE_INTERVAL_8HOUR,
     '12hr': Client.KLINE_INTERVAL_12HOUR,
+    '1wk' : Client.KLINE_INTERVAL_1WEEK,
 }
 
 client = Client(api_key=secrets.APIKEY, api_secret=secrets.SECRETKEY)
