@@ -17,15 +17,15 @@ interval_map = {
 
 client = Client(api_key=secrets.APIKEY, api_secret=secrets.SECRETKEY)
 
-def fetchBinance(asset, time_frame, start_date, end_date):
+def fetchBinance(traded_asset, time_frame, stable_asset, start_date, end_date):
     # file name used as an id for a specific asset and specific time frame
     # using file name helps avoid sending API request for data previously fetched
-    file_name = f'{asset}_{time_frame}_{start_date}-{end_date}_raw'
+    file_name = f'{traded_asset}_{time_frame}_{start_date}-{end_date}_raw'
     try:
-        df = pd.read_csv(f'data/{file_name}.csv')
+        df = pd.read_csv(f'data/raw/{file_name}.csv')
     except:
         df = client.get_historical_klines(
-                        f'{asset}USDT',
+                        f'{traded_asset}{stable_asset}',
                         interval=interval_map[time_frame],
                         start_str=start_date,
                         end_str=end_date
@@ -36,7 +36,7 @@ def fetchBinance(asset, time_frame, start_date, end_date):
                         columns=['openTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 
                                     'numOfTrades', 'takerBuyBaseAssetVolume', 'takerBuyQuoteAssetVolume', '_'])
 
-        df.to_csv(f'data/{file_name}.csv')
-        df = pd.read_csv(f'data/{file_name}.csv')
+        df.to_csv(f'data/raw/{file_name}.csv', index=False)
+        df = pd.read_csv(f'data/raw/{file_name}.csv')
 
     return df

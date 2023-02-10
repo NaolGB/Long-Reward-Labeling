@@ -1,0 +1,236 @@
+---
+title: "data_visualization"
+---
+
+```{r}
+library(fs)
+library(dplyr)
+library(tidyverse)
+library(scales)
+
+# dimension 825 x 465
+```
+
+# EMA
+
+```{r BTC}
+list_of_files <- dir_ls(path = "../data", regexp = "BTC")
+btc <- read_csv(list_of_files, id = "alpha")
+
+btc <- btc %>% 
+  mutate(
+    separate(btc, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+btc <- btc %>% 
+  mutate(
+    separate(btc, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+btc <- btc %>% 
+  mutate(
+    across(time_frame, factor, levels=c("1hr","12hr","1wk"))
+  )
+
+# plot
+ggplot(
+  btc,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close_ema,
+      color = alpha
+    )
+  ) +
+  
+  scale_y_continuous(
+    labels = label_number(
+      suffix = "K", 
+      scale = 1e-3
+    )
+    ) +
+  
+  facet_wrap(~time_frame, ncol = 1) +
+  theme_minimal() +
+  labs(
+    x = "Time",
+    y = "USDT",
+    title = "BTC prices in USDT",
+    subtitle = "By alpha levels of EMA",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+```{r ETH}
+list_of_files <- dir_ls(path = "../data", regexp = "ETH")
+eth <- read_csv(list_of_files, id = "alpha")
+
+eth <- eth %>% 
+  mutate(
+    separate(eth, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+eth <- eth %>% 
+  mutate(
+    separate(eth, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+eth <- eth %>% 
+  mutate(
+    across(time_frame, factor, levels=c("1hr","12hr","1wk"))
+  )
+
+# plot
+ggplot(
+  eth,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close_ema,
+      color = alpha
+    )
+  ) +
+  
+  scale_y_continuous(
+    labels = label_number(
+      suffix = "K", 
+      scale = 1e-3
+    )
+    ) +
+  
+  facet_wrap(~time_frame, ncol = 1) +
+  theme_minimal() +
+  labs(
+    x = "Time",
+    y = "USDT",
+    title = "ETH prices in USDT",
+    subtitle = "By alpha levels of EMA",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+```{r ADA}
+list_of_files <- dir_ls(path = "../data", regexp = "ADA")
+ada <- read_csv(list_of_files, id = "alpha")
+
+ada <- ada %>% 
+  mutate(
+    separate(ada, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+ada <- ada %>% 
+  mutate(
+    separate(ada, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+ada <- ada %>% 
+  mutate(
+    across(time_frame, factor, levels=c("1hr","12hr","1wk"))
+  )
+
+# plot
+ggplot(
+  ada,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close_ema,
+      color = alpha
+    )
+  ) +
+  
+  facet_wrap(~time_frame, ncol = 1) +
+  theme_minimal() +
+  labs(
+    x = "Time",
+    y = "USDT",
+    title = "ADA prices in USDT",
+    subtitle = "By alpha levels of EMA",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+```{r DOGE}
+list_of_files <- dir_ls(path = "../data", regexp = "DOGE")
+doge <- read_csv(list_of_files, id = "alpha")
+
+doge <- doge %>% 
+  mutate(
+    separate(doge, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+doge <- doge %>% 
+  mutate(
+    separate(doge, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+doge <- doge %>% 
+  mutate(
+    across(time_frame, factor, levels=c("1hr","12hr","1wk"))
+  )
+
+# plot
+ggplot(
+  doge,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close_ema,
+      color = alpha
+    )
+  ) +
+  
+  facet_wrap(~time_frame, ncol = 1) +
+  theme_minimal() +
+  labs(
+    x = "Time",
+    y = "USDT",
+    title = "DOGE prices in USDT",
+    subtitle = "By alpha levels of EMA",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
