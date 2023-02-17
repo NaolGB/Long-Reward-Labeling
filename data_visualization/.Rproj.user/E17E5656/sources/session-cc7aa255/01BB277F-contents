@@ -5,6 +5,7 @@ title: "data_visualization"
 ```{r}
 library(fs)
 library(dplyr)
+library(lubridate)
 library(tidyverse)
 library(scales)
 
@@ -228,6 +229,104 @@ ggplot(
     y = "USDT",
     title = "DOGE prices in USDT",
     subtitle = "By alpha levels of EMA",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+## Trend
+
+```{r}
+list_of_files <- dir_ls(path = "../data", regexp = "BTC")
+btc_uptrend <- read_csv(list_of_files, id = "alpha")
+
+btc_uptrend <- btc_uptrend %>% 
+  mutate(
+    separate(btc_uptrend, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+btc_uptrend <- btc_uptrend %>% 
+  mutate(
+    separate(btc_uptrend, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+btc_uptrend <- btc_uptrend %>% 
+  filter(time_frame == "1hr" & close_time_parsed >= ymd("2021-02-01") & close_time_parsed <= ymd("2021-02-15"))
+
+# plot
+ggplot(
+  btc_uptrend,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  
+  scale_y_continuous(
+    labels = label_number(
+      suffix = "K", 
+      scale = 1e-3
+    )
+    ) +
+  
+  theme_minimal() +
+  labs(
+    x = "Time (2021)",
+    y = "USDT",
+    title = "BTC prices in USDT (uptrend)",
+    caption = "Data from Binance.com"
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+```{r}
+list_of_files <- dir_ls(path = "../data", regexp = "BTC")
+btc_uptrend <- read_csv(list_of_files, id = "alpha")
+
+btc_uptrend <- btc_uptrend %>% 
+  mutate(
+    separate(btc_uptrend, col=alpha, into=c('_', 'hr_alpha'), sep="_USDT_")
+    )
+
+btc_uptrend <- btc_uptrend %>% 
+  mutate(
+    separate(btc_uptrend, col=hr_alpha, into=c('time_frame', 'alpha', '_ema'), sep='_')
+  ) %>% 
+  select(close_time_parsed, close, close_ema, time_frame, alpha)
+
+btc_uptrend <- btc_uptrend %>% 
+  filter(time_frame == "1hr" & close_time_parsed >= ymd("2021-04-15") & close_time_parsed <= ymd("2021-04-25"))
+
+# plot
+ggplot(
+  btc_uptrend,
+) +
+  geom_line(
+    aes(
+      x = close_time_parsed,
+      y = close,
+    )
+  ) +
+  
+  scale_y_continuous(
+    labels = label_number(
+      suffix = "K", 
+      scale = 1e-3
+    )
+    ) +
+  
+  theme_minimal() +
+  labs(
+    x = "Time (2021)",
+    y = "USDT",
+    title = "BTC prices in USDT (downtrend)",
     caption = "Data from Binance.com"
   ) +
   theme(
