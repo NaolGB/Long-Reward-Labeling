@@ -1,5 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
 class Labeling():
     def __init__(self, df: pd.DataFrame, alpha: float, trend_reverse_factor: float, change_tolerance: float, forward_term: int, break_away_point: float) -> None:
@@ -14,7 +13,7 @@ class Labeling():
         self.df['close_ema'] = self.df['close'].ewm(alpha=self.alpha).mean()
         self.df.dropna(inplace=True)
         self.df.reset_index(drop=True, inplace=True)
-        
+
 
     def percentage_change(self, start_index: int, end_index: int) -> float:
         # Given two indicies, return the percentage change at the second index form the first index
@@ -170,10 +169,10 @@ class Labeling():
 
                     time_n += new_first_index_addition
                     time_n_1 += new_second_index_addition
+
                     # to avoid doubling and explosive growth of new_second_index_addition
                     # new_second_index_addition = 1 
-
-                    if time_n_1 > len(self.df) - 1:
+                    if (time_n > len(self.df) - 1) or (time_n_1 > len(self.df) - 1):
                         break
                 
                 # enter new position (short)
@@ -197,7 +196,7 @@ class Labeling():
                     time_n_1 += new_second_index_addition
                     # to avoid doubling and explosive growth of new_second_index_addition
                     # new_second_index_addition = 1
-                    if time_n_1 > len(self.df) - 1:
+                    if (time_n > len(self.df) - 1) or (time_n_1 > len(self.df) - 1):
                         break
                     
                 # enter new position

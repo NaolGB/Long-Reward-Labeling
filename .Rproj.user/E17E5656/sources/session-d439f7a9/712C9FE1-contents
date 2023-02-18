@@ -8,6 +8,9 @@ library(dplyr)
 library(lubridate)
 library(tidyverse)
 library(scales)
+library(cowplot)
+
+theme_set(theme_minimal())
 
 # dimension 825 x 465
 ```
@@ -60,7 +63,6 @@ ggplot(
     ) +
   
   facet_wrap(~time_frame, ncol = 1) +
-  theme_minimal() +
   labs(
     x = "Time",
     y = "USDT",
@@ -332,4 +334,31 @@ ggplot(
   theme(
     legend.position = "bottom"
   )
+```
+
+## Long Utility Labeling
+
+```{r}
+btc_long_utility <- read_csv("data/labeled/BTC_USDT_1hr_0.5_0.3_1_8_2_long_utility.csv")
+
+# plot
+# p1 <- ggplot( btc_long_utility,aes(x = close_time_parsed)) +
+#   geom_line(aes (y = close)) + labs(x = NULL, y = "Close")
+
+p2 <- ggplot( btc_long_utility,aes(x = close_time_parsed)) +
+  geom_line(aes (y = close_ema), color = "#035AA6") + labs(x = NULL, y = "Close EMA")
+
+p3 <- ggplot( btc_long_utility,aes(x = close_time_parsed)) +
+  geom_point(aes (y = position, color=position)) + labs(x = NULL, y = "Position") + theme(legend.position = "none") 
+             
+  # scale_color_manual(values = c("#038C73", "#E9252F"))
+
+p4 <- ggplot( btc_long_utility,aes(x = close_time_parsed)) +
+  geom_line(aes (y = long_utility), color="#035AA6") + labs(x = "Time (2021)", y = "Long Uitlity")
+
+title <- ggdraw() + draw_label("Utility Labeling for BTC 1-hour", fontface = "bold")
+subtitle <- ggdraw() + draw_label("alpah = 0.5, trend reversal factor = 0.3, forward term = 8", fontface = "plain") 
+
+
+plot_grid(title, p2, p3, p4, subtitle, nrow=5, rel_heights = c(0.4, 1, 1, 1, 0.3))
 ```
