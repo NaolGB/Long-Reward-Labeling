@@ -205,6 +205,13 @@ class Labeling():
                 # update indices to new position indices
                 time_n = time_n_1
                 time_n_1 += 1
+        
+        # remove trailing terms after the last position is taken to avoid nan long_utility
+        i = len(self.df) - 2
+        while pd.isna(self.df.loc[i, 'position']):
+            i -= 1
+
+        self.df = self.df[:i+1].copy()
 
 
     def label_long_utility(self) -> pd.DataFrame:
@@ -226,6 +233,20 @@ class Labeling():
 
             i -= 1
 
-        self.df.loc[len(self.df)-1, 'long_utility'] = 0 # to make the scale of the graph of long_utility equal wit the rest
+
+        # relative (24 hour) standard scaling forlong_utility
+        ema_window = 20
+        for i in range(20, len(self.df)):
+            x_min = min(self.df.loc[i-ema_window:i, 'long_utility'])
+            x_max = max(self.df.loc[i-ema_window:i, 'long_utility'])
+            x = self.df.loc[i, 'long_utility']
+
+            self.df.loc[i, 'long_utility_context'] = (x - x_min) / (x_max - x_min)
+        
+        self.df['long_utility_context_ema'] = self.df['long_utility_context'].ewm(alpha=self.alpha).mean()
+
+        
+        self.df = self.df[ema_window:]
+        self.df.reset_index(inplace=True, drop=True)
 
         return self.df

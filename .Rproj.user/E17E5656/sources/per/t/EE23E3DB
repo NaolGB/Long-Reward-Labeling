@@ -1,0 +1,28 @@
+{
+    "id": "EE23E3DB",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1677435230756.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "id": "c4f74c5bb4c7405581947aec6d7e705d",
+        "name": "p1",
+        "title": "p1",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1677435230756,
+    "read_only": false,
+    "read_only_alternatives": []
+}
