@@ -234,7 +234,7 @@ class Labeling():
             i -= 1
 
 
-        # relative (24 hour) standard scaling forlong_utility
+        # relative (20 hour) standard scaling forlong_utility
         ema_window = 20
         for i in range(20, len(self.df)):
             x_min = min(self.df.loc[i-ema_window:i, 'long_utility'])
