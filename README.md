@@ -1,5 +1,4 @@
 # Labeling Market Data for Supervised Machine Learning  Based on the Profitability of Actions - Long Reward Labeling
-### Signature Work Product, in partial fulfillment of the Duke Kunshan University Undergraduate Degree Program
 ##### by Naol Basaye
 
 <br>
